@@ -1,190 +1,89 @@
 # Pass the Light
 
-A Unity optics simulation where every student you reach lights the way for the next.
+An optics lab you can play on a phone or in a browser. Guide a laser beam with mirrors and glass to light up every student in the class. Each student you reach passes the light on to the next one.
 
 | | |
 |---|---|
-| WebGL (play in browser) | https://gmwizera.github.io/LightLab/ |
-| Android APK | https://github.com/GMwizera/LightLab/releases/download/v1.0/PassTheLight.apk |
-| Video demo | `<YouTube / Drive link>` |
-| Unity version | 6000.5.10f1 (URP), New Input System only |
+| **Play in browser** | https://gmwizera.github.io/LightLab/ |
+| **Android app** | [Download PassTheLight.apk](https://github.com/GMwizera/LightLab/releases/download/v1.0/PassTheLight.apk) |
+| **Video demo** | `<YouTube / Drive link>` |
+| **Built with** | Unity 6000.5.10f1, URP, New Input System |
 
 ---
 
-## GCGO statement
+## My GCGO and mission
 
 **Grand Challenge:** Education
 
-**Mission:**
-
 > "My mission is to empower others to discover their potential, develop their abilities, and become leaders who create meaningful and lasting change in their communities. Through leadership, technology, and service, I strive to open doors of opportunity, inspire growth, and build a future where others are equipped to thrive and empower those who come after them, all while reflecting God's love in everything I do."
 
-## Problem context
+## The problem
 
-**The problem.** Many secondary schools teach optics (reflection and refraction) without lab equipment. Students learn rules such as "the angle of incidence equals the angle of reflection" from a textbook, without ever seeing a beam of light bounce or bend. *(Add a sourced statistic here, for example from MINEDUC or UNESCO, on the share of schools without science labs.)*
+Many secondary schools teach light and optics without any lab equipment. Students memorise "the angle of incidence equals the angle of reflection" without ever seeing a beam bounce. *(Add a sourced statistic here, for example from MINEDUC or UNESCO.)*
 
-**Why it matters.** Science is easier to understand and remember when students can experiment and see what happens. Without labs, students who are already disadvantaged fall further behind, and fewer of them choose science careers.
+This matters because science sticks when you can try it yourself. Without labs, the students who already have the least fall further behind.
 
-**Connection to my GCGO.** Pass the Light uses technology to give students a lab they can open on a phone or in a browser. Its main mechanic reflects my mission: a student who receives the light becomes a source of light for the next student, just as people who are empowered go on to empower those who come after them.
+Pass the Light gives them a lab that fits in a pocket. Its main idea also mirrors my mission: once a student is reached, they light the way for the next. Empowered people empower others.
 
-## Simulation overview
+## The simulation
 
-**What it does.** The player looks down on a classroom lab bench. A laser fires a beam of light. The player picks up mirrors, places them on glowing pads and rotates them to guide the beam to students' desks. When a student is reached, they light up in full colour and show their dream ("Future engineer", "Future doctor"...). In the last level, students who are lit fire their own gold beam and pass the light to the next student.
+You look down at a lab bench in a classroom. A laser fires a beam. You drag mirrors onto glowing pads and rotate them to steer the light to each student's desk. When the light reaches a student, they light up and show their dream: future engineer, doctor, teacher.
 
-**Target users.** Lower secondary students (about 12 to 16) learning about light, and teachers who want a quick demonstration they can project or share as a link.
+**Who it is for:** students aged about 12 to 16 learning about light, and teachers who want a quick demo to share.
 
-**Levels**
-
-| # | Level | Physics taught | Mission idea |
-|---|---|---|---|
-| 1 | First light | Reflection, i = r | Reaching one learner |
-| 2 | Around the barrier | Using several mirrors, the normal | Getting past barriers that keep learners out |
-| 3 | Pass it on | Refraction through glass (Snell's law) | Lit students pass the light on; gold arrows show which way each one will shine |
-
-Each level opens with a short lesson card, ends with a quiz question, and awards 1 to 3 stars based on how few moves you used. A correct answer unlocks the next level.
-
-**Key interactions**
-
-| Action | Mouse / keyboard | Touch (Android) |
+| Level | What you learn | The idea behind it |
 |---|---|---|
-| Pick up and move a mirror | Click and drag | Touch and drag |
-| Select a mirror | Click it | Tap it |
-| Rotate the selected mirror (15° steps) | Q / E | On-screen Rotate buttons |
-| Pause | Esc or the pause icon | Pause icon |
-| Open the lesson again | **?** button | **?** button |
-| Music on/off | Music icon | Music icon |
-| Answer the quiz and use the menus | Click | Tap |
+| 1. First light | Reflection: angle in = angle out | Reaching one learner |
+| 2. Around the barrier | Using two mirrors and the normal | Getting past barriers |
+| 3. Pass it on | Refraction through glass (Snell's law) | Students who are lit pass the light on |
 
-## Unity mechanics implemented
+Each level starts with a short lesson, ends with a quiz question, and gives 1 to 3 stars depending on how few moves you used.
 
-### UI
-Built with Unity UI (uGUI) on one canvas with a `CanvasScaler` set to scale with screen size, so it fits both desktop and phone screens.
-The UI uses icons rather than text wherever possible (Kenney Game Icons).
-- **Main menu:** numbered level cards with the best star rating, padlocks on locked levels, three icon steps for how to play, a music toggle, and Reset progress.
-- **HUD:** home, level progress dots, a row of **student icons that light up** as each student is reached, a move counter, music and pause icons, a one-line tip with a **?** button for the full lesson, round rotate buttons (labelled Q and E), and a live angle readout (`i 45°  r 45°`) shown only while a mirror is selected.
-- **Lesson card, quiz, Level complete, Pause and Finish screens.**
-- **Level 1 tutorial arrow** that bounces between the mirror and the target pad until the first move.
-- **World-space labels** above each desk that change from "Waiting for light" to the student's dream.
+**Controls:** drag a mirror with your mouse or finger. Rotate it with **Q / E** or the round buttons. **Esc** or the pause icon pauses the game.
 
-`UIManager.cs` switches between screens and updates them from the game state. `ButtonFeedback.cs` and `PopIn.cs` add the animations.
+## How I used the Unity mechanics
 
-### Scripting
+**UI.** A single scalable canvas that works on desktop and phone screens. It includes the main menu, a heads-up display (student icons that light up, moves, star target, angle readout), lesson cards, a quiz, and pause and finish screens. Icons replace text wherever possible.
 
-**How one frame works**
-1. `PointerInteractor` reads the mouse or finger (New Input System) and moves or rotates the selected mirror.
-2. `LaserEmitter` fires its beam: it raycasts, bounces off mirrors, bends through glass and stops at a desk.
-3. `StudentDesk` checks whether a beam touched it this frame. If it did, the student lights up and their relay beam turns on.
-4. `GameManager` hears that a student changed. When every student is lit, it celebrates and shows the quiz.
-5. `UIManager` updates the screen: student icons, moves and the angle readout.
+**Scripting.** Each frame follows the same flow:
+1. `PointerInteractor` reads the mouse or finger and moves or rotates the selected mirror.
+2. `LaserEmitter` traces the beam: it bounces off mirrors, bends through glass, and stops at a desk.
+3. `StudentDesk` lights up if the beam touched it, and turns on its own relay beam.
+4. `GameManager` notices when every student is lit, celebrates, and shows the quiz.
+5. `UIManager` updates the screen.
 
-| Script | Purpose |
-|---|---|
-| `Core/GameManager.cs` | Runs the game: menu, starting a level, counting moves, pause, quiz and finish |
-| `Core/LevelRoot.cs` | One per level: title, lesson, quiz and star target; resets the level's mirrors and desks |
-| `Core/ProgressStore.cs` | Saves unlocked levels, best moves and stars with PlayerPrefs |
-| `Core/Sfx.cs` | Plays sound effects and background music |
-| `Core/CameraBump.cs` | Short camera zoom when the whole class is lit |
-| `Optics/LaserEmitter.cs` | Traces the beam with raycasts (`Vector3.Reflect` on mirrors) and draws it with a Line Renderer |
-| `Optics/Mirror.cs` | Marks an object as a mirror and records the angle of incidence |
-| `Optics/GlassBlock.cs` | Bends the beam into and out of glass with Snell's law (`TryBend`, `TryFindExit`) |
-| `Optics/StudentDesk.cs` | A student: dark until the beam hits, then colour, glow, sparkles, a jump, and the relay beam |
-| `Optics/BeamEffects.cs` | Beam shimmer and glowing dots where the beam bounces |
-| `Interaction/PointerInteractor.cs` | Camera raycasts to pick up, drag, drop and rotate mirrors |
-| `Interaction/Grabbable.cs` | A movable piece: Rigidbody, snaps to pads (trigger), plays a sound when it lands (collision) |
-| `Interaction/PlacementSlot.cs` | A trigger pad that glows and pulses while a mirror is over it |
-| `Interaction/SelectionRing.cs` | Gold Line Renderer circle around the selected mirror |
-| `UI/UIManager.cs` | Shows the right screen and keeps the HUD up to date |
-| `UI/ButtonFeedback.cs` | Buttons squash when pressed, grow on hover, and click |
-| `UI/PopIn.cs` | Cards pop in with a small bounce |
-| `Editor/ProjectBuilder.cs` | Editor-only tool that generated the scene, prefabs, materials, sounds and UI, and runs the builds |
+**Collision.** Mirrors are Rigidbodies. The pads are trigger colliders: when a mirror is over a pad, the pad glows, and when you drop the mirror it snaps to the centre (`OnTriggerEnter`). When a mirror lands on the bench, `OnCollisionEnter` plays a thud.
 
-### Collision
-- **Triggers:** each `PlacementSlot` has a trigger collider. `Grabbable.OnTriggerEnter` and `OnTriggerExit` highlight the pad the mirror is over, and when the mirror is dropped it snaps to that pad's centre.
-- **Collisions:** mirrors have a `Rigidbody`. While held they are kinematic. When dropped, physics lets them fall onto the bench, and `OnCollisionEnter` plays a thud based on the impact speed.
-- Walls, desks, the laser body and the glass block use solid colliders, so the beam's raycasts can hit them.
+**Raycasting.** The beam itself is a chain of raycasts. When a ray hits a mirror, `Vector3.Reflect` gives the new direction. When it hits glass, Snell's law bends it. A second raycast from the camera finds the mirror under your finger.
 
-### Raycasting
-1. **The light beam** (`LaserEmitter.TraceBeam`). A loop calls `Physics.Raycast` from the laser along its forward direction:
-   - If it hits a `Mirror`, the direction becomes `Vector3.Reflect(direction, hit.normal)`, and a new ray starts just off the surface.
-   - If it hits a `GlassBlock`, the beam bends on entry and exit using the vector form of Snell's law, `n1 sin i = n2 sin r`. A ray that starts inside a collider can't hit it, so the exit point is found by casting backwards from beyond the block.
-   - If it hits a `StudentDesk`, the desk lights up. Anything else absorbs the beam.
-2. **Picking pieces** (`PointerInteractor`). `Camera.ScreenPointToRay` plus `Physics.Raycast` finds the mirror under the pointer. A ray against a flat `Plane` at carry height moves the mirror while you drag.
-3. **UI blocking.** `EventSystem.RaycastAll` checks whether the pointer is over a button, so a tap on a button doesn't also grab the mirror behind it.
+**Line Renderer.** Every point where the beam hits something becomes a point on a Line Renderer, so you see the exact path of the light. The laser is red, and the light passed on by students is gold. A second Line Renderer draws the gold ring around the selected mirror.
 
-### Line Renderer
-Each beam is a `LineRenderer` in world space. Every raycast hit adds a point, so the line shows the beam's exact path: straight lines, bounces and bends. The laser's beam is red. The relay beams that lit students fire are gold, to show light that has been passed on. The beam materials use HDR colours, so bloom makes them glow.
+**New Input System.** One action map (`LabControls`) with four actions: Point, Select, Rotate and Pause. They use `<Pointer>` bindings, so the same code works with a mouse and a touchscreen. The EventSystem uses `InputSystemUIInputModule`, and the old Input Manager is switched off.
 
-A second `LineRenderer` (`SelectionRing.cs`) draws a pulsing gold ring around the selected mirror, so players can see which piece the rotate buttons will turn.
+## Extra features
 
-### New Input System
-- `Assets/_Project/Input/LabControls.inputactions` holds one action map, **Lab**:
-  - `Point`: Value, Vector2, `<Pointer>/position`
-  - `Select`: Button, `<Pointer>/press`
-  - `Rotate`: Value, Axis, 1D composite with Q as negative and E as positive
-  - `Pause`: Button, `<Keyboard>/escape`
-- `<Pointer>` covers both the mouse and the touchscreen, so the same code runs on WebGL and Android.
-- The C# class `LabControls.cs` is generated from the asset and used by `PointerInteractor`.
-- The EventSystem uses `InputSystemUIInputModule`.
-- **Active Input Handling** is set to *Input System Package (New)* only. No `UnityEngine.Input` calls are used anywhere.
+- **Sound and music:** background music with a mute button, plus sounds for every action
+- **Particles:** sparkles when a student lights up, and confetti when the whole class is lit
+- **Saved progress:** unlocked levels and best stars are kept between sessions (PlayerPrefs)
+- **Glow effects:** URP bloom makes the beams and lit students glow
+- **Animation:** pop-in cards, bouncing buttons, jumping students, and a tutorial arrow
+- **Quiz and stars:** one question per level, a star rating, and locked levels
+- **Custom web page:** a full-screen loading page instead of Unity's default frame
 
-## Additional features (beyond the module)
+## Builds
 
-1. **Audio system.** Background music (a looping arpeggio) with a mute toggle that is remembered, plus sound effects for every button, picking up, dropping, a desk lighting up, the class being lit, each star, and right or wrong answers. All the clips are synthesised by the editor tool from sine waves and saved as WAV files, so no audio was downloaded.
-2. **Particle systems.** Gold sparkles when a student is reached, and a burst of confetti when the whole class is lit.
-3. **Data persistence.** `PlayerPrefs` saves unlocked levels and best move counts per level. This works on both WebGL (browser storage) and Android.
-4. **Procedural animation and lighting.** Students "jump" with a short scale animation, change from grey to full colour, and a point light glows above their desk.
-5. **Physics-based refraction.** Snell's law with total internal reflection, plus a live angle readout so students can check that i = r.
-6. **Mobile support.** On-screen rotate buttons, landscape orientation, the mobile URP quality asset, and a 60 FPS target.
-7. **Quiz, stars and level progression.** One question per level (a wrong answer shakes the card and shows ✗, a right answer turns green with ✓), a 1 to 3 star rating per level, and locked levels.
-8. **UI animation ("game feel").** Pop-in cards, squashy buttons, a pulsing drop pad, mirrors that grow slightly when lifted, a shimmering beam with glowing bounce points, and a camera bump on success.
-9. **Post-processing (URP Volume).** Bloom makes the beams, mirror caps and lit students glow; a vignette and colour grading give the classroom a warm look.
-10. **Custom WebGL page.** A full-window page with a branded "Pass the Light" loading screen and progress bar (`Assets/WebGLTemplates/PassTheLight`), instead of Unity's default frame.
-11. **Clarity aids.** A bobbing "!" over every student still waiting for light, a goal line on each lesson card, a visible star target ("★★★ in 4 moves"), rotate buttons that only light up when a mirror is selected, and a wood grid on the bench for lining pieces up.
+- **WebGL:** https://gmwizera.github.io/LightLab/ (served from the `docs/` folder)
+- **Android:** [v1.0 release](https://github.com/GMwizera/LightLab/releases/tag/v1.0). Download the APK on your phone, allow "Install unknown apps", then open it.
 
-## Project structure
-
-```
-Assets/_Project/
-  Art/Kenney/      Furniture Kit, Mini Characters and Game Icons (CC0)
-  Art/UI/          Generated circle sprite, bench grid and floor textures
-  Settings/        Post-processing volume profile
-  Audio/           Generated WAV sound effects and music
-  Editor/          ProjectBuilder (generates content, runs builds)
-  Input/           LabControls.inputactions + generated LabControls.cs
-  Materials/       URP materials
-  Prefabs/         Laser, RelayBeam, Mirror, GlassBlock, StudentDesk, Wall, PlacementSlot
-  Scenes/          Lab.unity
-  Scripts/Core | Interaction | Optics | UI
-```
-
-**Prefabs** are used for every repeated object. Changing the `Mirror` prefab, for example, updates every mirror in all three levels.
-
-## Build information
-
-**WebGL:** https://gmwizera.github.io/LightLab/. The build is in the `docs/` folder. Compression is disabled so it runs on GitHub Pages without extra server setup.
-
-**Android APK:** https://github.com/GMwizera/LightLab/releases/tag/v1.0 (IL2CPP, ARM64, OpenGL ES 3, landscape).
-
-**Run from source**
-1. Install Unity **6000.5.10f1** with the WebGL and Android build modules.
-2. Open the project folder in Unity Hub.
-3. Open `Assets/_Project/Scenes/Lab.unity` and press Play.
-4. To build: **File > Build Profiles**, choose WebGL or Android, and click Build. Or from a terminal:
-   ```
-   Unity -batchmode -quit -projectPath . -buildTarget WebGL -executeMethod PassTheLight.EditorTools.ProjectBuilder.BuildWebGL
-   Unity -batchmode -quit -projectPath . -buildTarget Android -executeMethod PassTheLight.EditorTools.ProjectBuilder.BuildAndroid
-   ```
-
-**Install the APK:** download it on an Android phone, allow "Install unknown apps" for your browser or file manager, then open the file.
+**Run it in Unity:** install Unity 6000.5.10f1 with the WebGL and Android modules, open the project, open `Assets/_Project/Scenes/Lab.unity`, and press Play.
 
 ## Reflection
 
-- **Challenge:** the first beam ray kept hitting the mirror it had just bounced off, because the new ray started exactly on the mirror's surface. Starting the next ray a tiny distance (`SurfaceOffset`) along the new direction fixed it.
-- **Challenge:** a ray that starts inside the glass block can't detect the block's far side. I solved this by casting a ray backwards from outside the block to find the exit point.
-- **Cross-platform:** using `<Pointer>` bindings plus on-screen rotate buttons meant one input setup for both mouse and touch. WebGL compression was disabled so GitHub Pages can serve the build.
-- **With more time:** more levels (prisms, coloured filters), a Kinyarwanda translation, and a teacher mode for building custom levels.
+- **The beam hit the same mirror twice.** Each new ray started exactly on the mirror's surface, so it hit that mirror again straight away. Starting each new ray a tiny distance away fixed it.
+- **Finding where light leaves the glass.** A ray that starts inside a collider cannot detect it, so I cast a ray backwards from outside the block to find the exit point.
+- **Android showed only half the screen.** Switching the graphics from Vulkan to OpenGL ES 3 fixed it on my phone.
+- **With more time** I would add more levels (prisms and colour filters), a Kinyarwanda version, and a mode where teachers build their own levels.
 
 ## Credits
 
-- 3D models, icons and the title font: [Kenney](https://kenney.nl) Furniture Kit, Mini Characters, Game Icons and Kenney Fonts (CC0 1.0).
-- Developed by Gisele Mwizera, African Leadership University.
+3D models, icons and font by [Kenney](https://kenney.nl) (CC0). Made by Gisele Mwizera, African Leadership University.
