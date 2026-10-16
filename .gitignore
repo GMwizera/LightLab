@@ -115,3 +115,4 @@ InitTestScene*.unity*
 
 # Build byproducts
 /[Dd]ata/
+.DS_Store
