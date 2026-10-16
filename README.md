@@ -19,7 +19,7 @@ An optics lab you can play on a phone or in a browser. Guide a laser beam with m
 
 ## The problem
 
-Many secondary schools teach light and optics without any lab equipment. Students memorise "the angle of incidence equals the angle of reflection" without ever seeing a beam bounce. *(Add a sourced statistic here, for example from MINEDUC or UNESCO.)*
+In Rwanda, only **249 of 2,242 secondary schools (11.1%) have a science laboratory**. The other 1,993 schools teach science without one ([MINEDUC Education Statistical Yearbook 2024/25](https://www.mineduc.gov.rw/fileadmin/user_upload/Mineduc/Publications/REPORTS/Education_Statistics/Education_statistical_yearbook/Education_Statistical_Year_Book_2024-2025.pdf), Table 4.2.3). In most classrooms, students memorise "the angle of incidence equals the angle of reflection" without ever seeing a beam of light bounce.
 
 This matters because science sticks when you can try it yourself. Without labs, the students who already have the least fall further behind.
 
