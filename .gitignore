@@ -116,3 +116,6 @@ InitTestScene*.unity*
 # Build byproducts
 /[Dd]ata/
 .DS_Store
+
+# Personal notes
+VIDEO_SCRIPT.md

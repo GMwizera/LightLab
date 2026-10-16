@@ -69,27 +69,34 @@ The UI uses icons rather than text wherever possible (Kenney Game Icons).
 `UIManager.cs` switches between screens and updates them from the game state. `ButtonFeedback.cs` and `PopIn.cs` add the animations.
 
 ### Scripting
-See [CODE_GUIDE.md](CODE_GUIDE.md) for a plain-English walk-through of how the scripts work together.
+
+**How one frame works**
+1. `PointerInteractor` reads the mouse or finger (New Input System) and moves or rotates the selected mirror.
+2. `LaserEmitter` fires its beam: it raycasts, bounces off mirrors, bends through glass and stops at a desk.
+3. `StudentDesk` checks whether a beam touched it this frame. If it did, the student lights up and their relay beam turns on.
+4. `GameManager` hears that a student changed. When every student is lit, it celebrates and shows the quiz.
+5. `UIManager` updates the screen: student icons, moves and the angle readout.
 
 | Script | Purpose |
 |---|---|
-| `Core/GameManager.cs` | Game flow and state (Menu, Playing, Paused, Quiz, LevelComplete, Finished), moves, pausing |
-| `Core/LevelRoot.cs` | A level's lesson and quiz data; finds its desks and movable pieces; resets the level |
-| `Core/ProgressStore.cs` | Saves unlocked levels and best scores (PlayerPrefs) |
-| `Core/Sfx.cs` | Sound effects generated in code |
-| `Optics/LaserEmitter.cs` | Traces the beam with raycasts and draws it with a Line Renderer |
-| `Optics/Mirror.cs` | Marks a mirror and records the angle of incidence |
-| `Optics/GlassBlock.cs` | Refraction with Snell's law, including total internal reflection |
-| `Optics/StudentDesk.cs` | Lights up when the beam hits it; turns on its relay beam |
-| `Interaction/PointerInteractor.cs` | New Input System controls and camera raycasts for picking, dragging, dropping and rotating |
-| `Interaction/Grabbable.cs` | Picking up and dropping with a Rigidbody; snapping to slots; collision sounds |
-| `Interaction/PlacementSlot.cs` | Glowing trigger pads that pieces snap to |
-| `UI/UIManager.cs` | All screens and HUD updates, star reveal, quiz feedback, tutorial arrow |
+| `Core/GameManager.cs` | Runs the game: menu, starting a level, counting moves, pause, quiz and finish |
+| `Core/LevelRoot.cs` | One per level: title, lesson, quiz and star target; resets the level's mirrors and desks |
+| `Core/ProgressStore.cs` | Saves unlocked levels, best moves and stars with PlayerPrefs |
+| `Core/Sfx.cs` | Plays sound effects and background music |
+| `Core/CameraBump.cs` | Short camera zoom when the whole class is lit |
+| `Optics/LaserEmitter.cs` | Traces the beam with raycasts (`Vector3.Reflect` on mirrors) and draws it with a Line Renderer |
+| `Optics/Mirror.cs` | Marks an object as a mirror and records the angle of incidence |
+| `Optics/GlassBlock.cs` | Bends the beam into and out of glass with Snell's law (`TryBend`, `TryFindExit`) |
+| `Optics/StudentDesk.cs` | A student: dark until the beam hits, then colour, glow, sparkles, a jump, and the relay beam |
+| `Optics/BeamEffects.cs` | Beam shimmer and glowing dots where the beam bounces |
+| `Interaction/PointerInteractor.cs` | Camera raycasts to pick up, drag, drop and rotate mirrors |
+| `Interaction/Grabbable.cs` | A movable piece: Rigidbody, snaps to pads (trigger), plays a sound when it lands (collision) |
+| `Interaction/PlacementSlot.cs` | A trigger pad that glows and pulses while a mirror is over it |
+| `Interaction/SelectionRing.cs` | Gold Line Renderer circle around the selected mirror |
+| `UI/UIManager.cs` | Shows the right screen and keeps the HUD up to date |
 | `UI/ButtonFeedback.cs` | Buttons squash when pressed, grow on hover, and click |
-| `UI/PopIn.cs` | Cards pop in with a small overshoot and fade |
-| `Optics/BeamEffects.cs` | Beam shimmer and glow points where the beam bounces or ends |
-| `Core/CameraBump.cs` | Short camera zoom when the class is lit |
-| `Editor/ProjectBuilder.cs` | Editor tool that generates materials, prefabs, levels and UI, and runs the builds |
+| `UI/PopIn.cs` | Cards pop in with a small bounce |
+| `Editor/ProjectBuilder.cs` | Editor-only tool that generated the scene, prefabs, materials, sounds and UI, and runs the builds |
 
 ### Collision
 - **Triggers:** each `PlacementSlot` has a trigger collider. `Grabbable.OnTriggerEnter` and `OnTriggerExit` highlight the pad the mirror is over, and when the mirror is dropped it snaps to that pad's centre.
