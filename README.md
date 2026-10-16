@@ -73,7 +73,7 @@ Each level starts with a short lesson, ends with a quiz question, and gives 1 to
 ## Builds
 
 - **WebGL:** https://gmwizera.github.io/LightLab/ (served from the `docs/` folder)
-- **Android:** [v1.0 release](https://github.com/GMwizera/LightLab/releases/tag/v1.0). Download the APK on your phone, allow "Install unknown apps", then open it.
+- **Android:** [v1.0 release](https://github.com/GMwizera/LightLab/releases/tag/v1.0). Download the APK on your Android phone, allow "Install unknown apps", then open it.
 
 **Run it in Unity:** install Unity 6000.5.10f1 with the WebGL and Android modules, open the project, open `Assets/_Project/Scenes/Lab.unity`, and press Play.
 
