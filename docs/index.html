@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+  <title>Pass the Light</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #160f0d; overflow: hidden; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+    #unity-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: #160f0d; outline: none; }
+    #loader { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+              background: radial-gradient(circle at 50% 40%, #2a1d17 0%, #160f0d 70%); color: #f2efe8; transition: opacity .5s; }
+    #loader h1 { margin: 0 0 8px; font-size: clamp(32px, 7vw, 72px); letter-spacing: .08em; color: #ffc840; font-weight: 800; }
+    #loader p { margin: 0 0 32px; opacity: .75; font-size: clamp(14px, 2vw, 18px); text-align: center; padding: 0 16px; }
+    #beam { width: min(420px, 80vw); height: 8px; border-radius: 4px; background: rgba(255,255,255,.12); overflow: hidden; }
+    #beam-fill { width: 0%; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #ff5a3c, #ffc840);
+                 box-shadow: 0 0 18px #ff7a4c; transition: width .2s; }
+    #hint { margin-top: 14px; font-size: 13px; opacity: .5; }
+    #error { display: none; max-width: 520px; margin-top: 20px; color: #ffb4a8; text-align: center; padding: 0 16px; }
+  </style>
+</head>
+<body>
+  <canvas id="unity-canvas" tabindex="-1"></canvas>
+  <div id="loader">
+    <h1>PASS THE LIGHT</h1>
+    <p>Every student you reach lights the way for the next.</p>
+    <div id="beam"><div id="beam-fill"></div></div>
+    <div id="hint">Loading the optics lab…</div>
+    <div id="error"></div>
+  </div>
+  <script>
+    const canvas = document.querySelector("#unity-canvas");
+    const loader = document.querySelector("#loader");
+    const fill = document.querySelector("#beam-fill");
+    const config = {
+      dataUrl: "Build/docs.data",
+      frameworkUrl: "Build/docs.framework.js",
+      codeUrl: "Build/docs.wasm",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "Gisele Mwizera",
+      productName: "Pass the Light",
+      productVersion: "0.1.0",
+      devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+    };
+    const script = document.createElement("script");
+    script.src = "Build/docs.loader.js";
+    script.onload = () => {
+      createUnityInstance(canvas, config, p => { fill.style.width = (p * 100) + "%"; })
+        .then(() => { loader.style.opacity = 0; setTimeout(() => loader.remove(), 500); canvas.focus(); })
+        .catch(message => {
+          const error = document.querySelector("#error");
+          error.textContent = "The lab could not start: " + message;
+          error.style.display = "block";
+        });
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
