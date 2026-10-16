@@ -4,7 +4,7 @@ A Unity optics simulation where every student you reach lights the way for the n
 
 | | |
 |---|---|
-| WebGL (play in browser) | `https://gmwizera.github.io/<REPO-NAME>/` (replace after enabling GitHub Pages) |
+| WebGL (play in browser) | https://gmwizera.github.io/LightLab/ |
 | Android APK | `<GitHub Release link to PassTheLight.apk>` |
 | Video demo | `<YouTube / Drive link>` |
 | Unity version | 6000.5.10f1 (URP), New Input System only |
@@ -161,7 +161,7 @@ Assets/_Project/
 
 ## Build information
 
-**WebGL:** `<GitHub Pages link>`. The build is in the `docs/` folder. Compression is disabled so it runs on GitHub Pages without extra server setup.
+**WebGL:** https://gmwizera.github.io/LightLab/ The build is in the `docs/` folder. Compression is disabled so it runs on GitHub Pages without extra server setup.
 
 **Android APK:** `<GitHub Release link>` (IL2CPP, ARM64, landscape).
 
