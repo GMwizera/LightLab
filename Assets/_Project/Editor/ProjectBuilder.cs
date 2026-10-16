@@ -1253,7 +1253,15 @@ namespace PassTheLight.EditorTools
             PlayerSettings.companyName = "Gisele Mwizera";
             PlayerSettings.productName = "Pass the Light";
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, "com.giselemwizera.passthelight");
-            PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
+            PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;
+            PlayerSettings.allowedAutorotateToLandscapeLeft = true;
+            PlayerSettings.allowedAutorotateToLandscapeRight = true;
+            PlayerSettings.allowedAutorotateToPortrait = false;
+            PlayerSettings.allowedAutorotateToPortraitUpsideDown = false;
+            PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.Android, false);
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, new[] { GraphicsDeviceType.OpenGLES3 });
+            PlayerSettings.Android.optimizedFramePacing = false;
+            PlayerSettings.Android.renderOutsideSafeArea = true;
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
