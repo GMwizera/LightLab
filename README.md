@@ -15,7 +15,7 @@ An optics lab you can play on a phone or in a browser. Guide a laser beam with m
 
 **Grand Challenge:** Education
 
-> "My mission is to empower others to discover their potential, develop their abilities, and become leaders who create meaningful and lasting change in their communities. Through leadership, technology, and service, I strive to open doors of opportunity, inspire growth, and build a future where others are equipped to thrive and empower those who come after them, all while reflecting God's love in everything I do."
+> "My mission is to empower others to discover their potential, develop their abilities, and become leaders who create meaningful and lasting change in their communities. Through leadership, technology, and service, I strive to open doors of opportunity, inspire growth, and build a future where others are equipped to thrive and empower those who come after them."
 
 ## The problem
 
